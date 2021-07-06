@@ -1,2 +1,4 @@
-FROM node:current-alpine3.12
-RUN apt-get update -y && apt-get upgrade -y
+FROM php:apache
+RUN apt-get update && apt-get upgrade -y
+RUN docker-php-ext-install pdo pdo_mysql
+EXPOSE 80
