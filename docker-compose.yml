@@ -1,7 +1,7 @@
 version: '3'
 services:
-      opensupports:
-            container_name: opensupports
+      mantis:
+            container_name: mantis
             build:
                   context: .
                   dockerfile: Dockerfile
@@ -10,7 +10,7 @@ services:
                   -'8080:80'
                   -'443:443'
             depends_on:
-                  - opensupports_db
+                  - mantis_db
             networks:
                   expose-network:
                   mysql-network:
@@ -21,17 +21,17 @@ services:
                   - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
                   - "traefik.enable=true"
                   # Set host
-                  - "traefik.http.routers.opensupports.rule=Host(`opensupports.defi-lovelace.fr`)"
+                  - "traefik.http.routers.support.rule=Host(`support.defi-lovelace.fr`)"
                   # Set service
-                  - "traefik.http.services.opensupports.loadbalancer.server.port=80"
-                  - "traefik.http.routers.opensupports.tls.certresolver=le"
+                  - "traefik.http.services.support.loadbalancer.server.port=80"
+                  - "traefik.http.routers.support.tls.certresolver=le"
                   # Set to the secure endpoint
-                  - "traefik.http.routers.opensupports.entrypoints=secure"
+                  - "traefik.http.routers.support.entrypoints=secure"
                   # Redirect
-                  - "traefik.http.routers.opensupports-redir.rule=Host(`opensupports.defi-lovelace.fr`)"
-                  - "traefik.http.routers.opensupports-redir.entrypoints=insecure"
-                  - "traefik.http.routers.opensupports-redir.middlewares=redirect-to-https"
-      opensupports_db:
+                  - "traefik.http.routers.support-redir.rule=Host(`support.defi-lovelace.fr`)"
+                  - "traefik.http.routers.support-redir.entrypoints=insecure"
+                  - "traefik.http.routers.support-redir.middlewares=redirect-to-https"
+      mantis_db:
             container_name: mysql_server
             image: mysql:latest
             networks:
